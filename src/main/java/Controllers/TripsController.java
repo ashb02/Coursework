@@ -3,22 +3,25 @@ package Controllers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import static Server.Main.db;
+
 public class TripsController {
+
     public static void listTrips(){
         try{
             PreparedStatement ps = db.prepareStatement("SELECT TripID, TripStart, TripEnd, UserID FROM Trips");
 
-            ResultSEt results = ps.executeQuery();
-            while(results.next()){
+            ResultSet results = ps.executeQuery();
+            while(results.next()) {
                 int TripID = results.getInt(1);
                 String TripStart = results.getString(2);
                 String TripEnd = results.getString(3);
-                int UserID = results.get(4);
-                System.out.println(TripID + " " + " " + TripStart + " " + TripEnd + " " + UserID);
-
-            } catch (Exception exception){
-                System.out.println("Database error: " + exception.getMessage());
+                int UserID = results.getInt(4);
+                System.out.println(TripID + " " + TripStart + " " + TripEnd + " " + UserID);
             }
+
+        } catch (Exception exception){
+            System.out.println("Database error: " + exception.getMessage());
         }
     }
 
@@ -62,4 +65,5 @@ public class TripsController {
             System.out.println("Database error: " + exception.getMessage());
         }
     }
+
 }

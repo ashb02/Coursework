@@ -3,10 +3,14 @@ package Controllers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import static Server.Main.db;
+
+
 public class UsersController {
+
     public static void listUser(){
         try{
-            PreparedStatement ps = db.perpareStatement("SELECT UserID, EmailAddress, FirstName, Password FROM Users");
+            PreparedStatement ps = db.prepareStatement("SELECT UserID, EmailAddress, FirstName, Password FROM Users");
 
             ResultSet results = ps.executeQuery();
             while(results.next()){
@@ -14,7 +18,7 @@ public class UsersController {
                 String EmailAddress =  results.getString(2);
                 String FirstName = results.getString(3);
                 String Password = results.getString(4);
-                System.out.println(userID + " " + EmailAddress + " " + FirstName + " " + Password);
+                System.out.println(UserID + " " + EmailAddress + " " + FirstName + " " + Password);
             }
         } catch (Exception exception){
             System.out.println("Database error: " + exception.getMessage());
@@ -38,7 +42,7 @@ public class UsersController {
 
     public static void UpdateUser(int UserID, String EmailAddress, String FirstName, String Password){
         try{
-            PreparedStatement ps = db.PreparedStatement("UPDATE Users SET UserID = ?, EmailAddress = ?, FirstName = ?, Password = ?");
+            PreparedStatement ps = db.prepareStatement("UPDATE Users SET UserID = ?, EmailAddress = ?, FirstName = ?, Password = ?");
             ps.setInt(1, UserID);
             ps.setString(2, EmailAddress);
             ps.setString(3, FirstName);
@@ -59,4 +63,6 @@ public class UsersController {
             System.out.println("Database error: " + exception.getMessage());
         }
     }
+
+
 }

@@ -9,7 +9,7 @@ public class Main {
     public static Connection db = null;
 
     public static void main(String[] args){
-        openDatabase("Database.db");
+        openDatabase("TravelPlannerDatabase.db");
 
         closeDatabase();
     }
