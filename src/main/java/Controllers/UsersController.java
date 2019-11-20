@@ -8,6 +8,7 @@ import static Server.Main.db;
 
 public class UsersController {
 
+    //Outputs the items in the Users Table
     public static void listUser(){
         try{
             PreparedStatement ps = db.prepareStatement("SELECT UserID, EmailAddress, FirstName, Password FROM Users");
@@ -25,6 +26,7 @@ public class UsersController {
         }
     }
 
+    //Adds a record to the User Table
     public static void insertUser(int UserID, String EmailAddress, String FirstName, String Password){
         try{
             PreparedStatement ps = db.prepareStatement("INSERT INTO Users (UserID, EmailAddress, FirstName, Password) VALUES (?, ?, ?, ?");
@@ -40,6 +42,7 @@ public class UsersController {
         }
     }
 
+    //Changes a record wihtin the Users Table
     public static void UpdateUser(int UserID, String EmailAddress, String FirstName, String Password){
         try{
             PreparedStatement ps = db.prepareStatement("UPDATE Users SET UserID = ?, EmailAddress = ?, FirstName = ?, Password = ?");
@@ -53,6 +56,7 @@ public class UsersController {
         }
     }
 
+    //Deletes a record within the User Table
     public static void deleteUser(int UserID){
         try{
             PreparedStatement ps = db.prepareStatement("DELETE FROM Users WHERE UserID = ?");

@@ -7,6 +7,7 @@ import static Server.Main.db;
 
 public class RestaurantsController {
 
+    //Outputs the items in the Restaurants Table
     public static void listRestaurants() {
         try {
             PreparedStatement ps = db.prepareStatement("SELECT RestaurantID, LocationID, RestaurantName, Description, Cost, Address, Website FROM Restaurants");
@@ -25,6 +26,7 @@ public class RestaurantsController {
         }
     }
 
+    //Adds a record to the Restaurants Table
     public static void insertRestaurant(int RestaurantID, int LocationID, String RestaurantName, String Description, String Cost, String Address, String Website) {
         try {
             PreparedStatement ps = db.prepareStatement("INSERT INTO Restaurants (RestaurantID, LocationID, RestaurantName, Description, Cost, Address, Website) VALUES (?, ?, ?, ?, ?, ?, ?); ");
@@ -43,6 +45,7 @@ public class RestaurantsController {
         }
     }
 
+    //Changes a record within the Restaurant Table
     public static void updateRestaurant(int RestaurantID, int LocationID, String RestaurantName, String Description, String Cost, String Address, String Website){
         try{
             PreparedStatement ps = db.prepareStatement("UPDATE Restaurant SET RestaurantID = ?, LocationID = ?, RestaurantName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");
@@ -59,6 +62,7 @@ public class RestaurantsController {
         }
     }
 
+    //Deletes a record within the Restaurants
     public static void deleteRestaurant(int RestaurantID, int LocationID, String RestaurantName, String Description, String Cost, String Address, String Website){
         try{
             PreparedStatement ps = db.prepareStatement("DELETE FROM Restaurants WHERE RestaurantID = ?, LocationID = ?, RestaurantName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");

@@ -7,6 +7,7 @@ import static Server.Main.db;
 
 public class TripRestaurantsController {
 
+    //Outputs the items in the Accommodation Table
     public static void listTripRestaurants() {
         try {
             PreparedStatement ps = db.prepareStatement("SELECT TripID, DayNumber, Time, RestaurantID FROM TripRestaurant");
@@ -26,6 +27,7 @@ public class TripRestaurantsController {
 
     }
 
+    //Adds a record to the TripRestaurants Table
     public static void insertTripRestaurants(int TripID, int DayNumber, String Time, int RestaurantID){
         try {
             PreparedStatement ps = db.prepareStatement("INSERT INTO TripRestaurants (TripID, DayNumber, Time, RestaurantID) VALUES (?, ?, ?, ?)");
@@ -42,6 +44,7 @@ public class TripRestaurantsController {
 
     }
 
+    //Changes a record within the TripRestarants Table
     public static void UpdateTripRestaurants(int TripID, int DayNumber, String Time, int RestaurantID){
         try{
             PreparedStatement ps = db.prepareStatement("UPDATE TripRestaurants SET TripID = ?, DayNumber = ?, Time = ?, RestaurantID = ?");
@@ -55,6 +58,7 @@ public class TripRestaurantsController {
         }
     }
 
+    //Deletes a record within the TripRestaurants Table
     public static void deleteTripRestaurants(int TripID, int DayNumber, String Time, int RestaurantID){
         try{
             PreparedStatement ps = db.prepareStatement("DELETE FROM TripRestaurants WHERE TripID = ?, DayNumber = ?, Time = ?, RestaurantID = ?");

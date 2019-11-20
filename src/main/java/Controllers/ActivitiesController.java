@@ -7,6 +7,7 @@ import static Server.Main.db;
 
 public class ActivitiesController {
 
+    //Outputs the items in the Actvities Table
         public static void listActivities() {
             try {
                 PreparedStatement ps = db.prepareStatement("SELECT ActivityID, LocationID, ActivityName, Description, Cost, Address, Website");
@@ -27,6 +28,7 @@ public class ActivitiesController {
             }
         }
 
+    //Adds a record to the Activities Table
         public static void insertActivities(int ActivityID, int LocationID, String ActivityName, String Description, String Cost, String Address, String Website) {
             try {
                 PreparedStatement ps = db.prepareStatement("INSERT INTO Activities (ActivityID, LocationID, ActivityName, Description, Cost, Address, Website) VALUES (?, ?, ?, ?, ?, ?, ?");
@@ -45,6 +47,7 @@ public class ActivitiesController {
             }
         }
 
+    //Changes a record within the Activities Table
         public static void updateActivities(int ActivityID, int LocationID, String ActivityName, String Description, String Cost, String Address, String Website){
             try{
                 PreparedStatement ps = db.prepareStatement("UPDATE Activities SET ActivityID = ?, LocationID = ?, ActivityName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");
@@ -61,7 +64,8 @@ public class ActivitiesController {
             }
         }
 
-        public static void deleteActivtiy(int ActivityID, int LocationID, String ActivityName, String Description, String Cost, String Address, String Website){
+    //Adds a record to the Activities Table
+        public static void deleteActivity(int ActivityID, int LocationID, String ActivityName, String Description, String Cost, String Address, String Website){
             try{
                 PreparedStatement ps = db.prepareStatement("DELETE FROM Activities SET ActivityID = ?, LocationID = ?, ActivityName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");
                 ps.setInt(1, ActivityID);

@@ -7,6 +7,7 @@ import static Server.Main.db;
 
 public class AccommodationController {
 
+    //Outputs the items in the Accommodation Table
     public void listAccommodation() {
         try {
             PreparedStatement ps = db.prepareStatement("SELECT AccommodationID, LocationID, AccommodationName, Description, Cost, Address, Website FROM Accommodation");
@@ -27,6 +28,7 @@ public class AccommodationController {
         }
     }
 
+    //Adds a record to the Accommodation Table
     public void insertAccommodation(int AccommodationID, int LocationID, String AccommodationName, String Description, String Cost, String Address, String Website) {
         try {
             PreparedStatement ps = db.prepareStatement("INSERT INTO Accommodation (AccommodationID, LocationID, AccommodationName, Description, Cost, Address, Website) VALUES (?, ?, ?, ?, ?, ?, ?");
@@ -47,6 +49,7 @@ public class AccommodationController {
         }
     }
 
+    //Changes a record within the Accommodation Table
         public static void updateAccommodation (int AccommodationID, int LocationID, String AccommodationName, String Description, String Cost, String Address, String Website){
             try {
                 PreparedStatement ps = db.prepareStatement("UPDATE Accommodation SET AccommodationID = ?, LocationID = ?, AccommodationName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");

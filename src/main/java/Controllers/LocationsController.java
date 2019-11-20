@@ -7,6 +7,7 @@ import static Server.Main.db;
 
 public class LocationsController {
 
+    //Outputs the items in the Locations Table
     public static void listLocations() {
         try {
             PreparedStatement ps = db.prepareStatement("SELECT LocationID, LocationName, Cost, AverageTemperature");
@@ -24,6 +25,7 @@ public class LocationsController {
         }
     }
 
+    //Adds a record to the Locations Table
     public static void insertLocation(int LocationID, String LocationName, String Cost, String AverageTemperature) {
         try {
             PreparedStatement ps = db.prepareStatement("INSERT INTO Activities (LocationID, LocationName, Cost, AverageTemperature) VALUES (?, ?, ?, ?");
@@ -39,6 +41,7 @@ public class LocationsController {
         }
     }
 
+    //Updates a record in the Locations Table
     public static void updateLocations(int LocationID, String LocationName, String Cost, String AverageTemperature){
         try{
             PreparedStatement ps = db.prepareStatement("UPDATE LocationID = ?, LocationName = ?, Cost = ?, AverageTemperature = ?");
@@ -52,9 +55,10 @@ public class LocationsController {
         }
     }
 
-    public static void deleteActivtiy(int LocationID, String LocationName, String Cost, String AverageTemperature){
+    //Deletes a record within the Location Table
+    public static void deleteLocation(int LocationID, String LocationName, String Cost, String AverageTemperature){
         try{
-            PreparedStatement ps = db.prepareStatement("DELETE FROM Activities WHERE ActivityID = ?, LocationID = ?, ActivityName = ?");
+            PreparedStatement ps = db.prepareStatement("DELETE FROM Locations WHERE ActivityID = ?, LocationID = ?, ActivityName = ?");
             ps.setInt(1, LocationID);
             ps.setString(2, LocationName);
             ps.setString(3, Cost);
