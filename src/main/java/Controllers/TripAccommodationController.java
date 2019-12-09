@@ -17,7 +17,7 @@ public class TripAccommodationController
 
             ResultSet results = ps.executeQuery();
 
-            while (results.next())
+            while (results.next()) //returns the next record, returns false when no more in the table
             {
                 int TripID = results.getInt(1);
                 int DayNumber = results.getInt(2);
@@ -26,7 +26,7 @@ public class TripAccommodationController
                 System.out.println(TripID + " " + DayNumber + " " + AccommodationID);
             }
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -41,14 +41,16 @@ public class TripAccommodationController
         {
             PreparedStatement ps = db.prepareStatement("INSERT INTO AccommodationDetails (TripID, DayNumber, AccommodationID) VALUES (?, ?, ?");
 
+            //contain the values to be added through the SQL statement in place of the ?s
             ps.setInt(1, TripID);
             ps.setInt(2, DayNumber);
             ps.setInt(3, AccommodationID);
-            ps.executeUpdate();
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
 
             System.out.println("Record added to AccommodationDetails table");
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -63,12 +65,15 @@ public class TripAccommodationController
         {
             PreparedStatement ps = db.prepareStatement("UPDATE AccommodationDetails SET TripID = ?, DayNumber = ?, AccommodationID = ?");
 
+            //contain the values to be changed through the SQL statement in place of the ?s
             ps.setInt(1, TripID);
             ps.setInt(2, DayNumber);
             ps.setInt(3, AccommodationID);
 
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
+
         }
-        catch(Exception exception)
+        catch(Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }

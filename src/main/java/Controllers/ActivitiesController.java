@@ -17,7 +17,7 @@ public class ActivitiesController
 
                 ResultSet results = ps.executeQuery();
 
-                while (results.next())
+                while (results.next()) //returns the next record, returns false when no more in the table
                 {
                     int ActivityID = results.getInt(1);
                     int LocationID = results.getInt(2);
@@ -27,10 +27,10 @@ public class ActivitiesController
                     String Address = results.getString(6);
                     String Website = results.getString(7);
 
-                    System.out.println(ActivityID + " " + LocationID + " " + ActivityID + " " + Description + " " + Cost + " " + Address + " " + Website);
+                    System.out.println(ActivityID + " " + LocationID + " " + ActivityName + " " + Description + " " + Cost + " " + Address + " " + Website);
                 }
             }
-            catch (Exception exception)
+            catch (Exception exception) //if an error occurs returns an error message
             {
                 System.out.println("Database error: " + exception.getMessage());
             }
@@ -43,6 +43,7 @@ public class ActivitiesController
             {
                 PreparedStatement ps = db.prepareStatement("INSERT INTO Activities (ActivityID, LocationID, ActivityName, Description, Cost, Address, Website) VALUES (?, ?, ?, ?, ?, ?, ?");
 
+                //contain the values to be added through the SQL statement in place of the ?s
                 ps.setInt(1, ActivityID);
                 ps.setInt(2, LocationID);
                 ps.setString(3, ActivityName);
@@ -51,11 +52,11 @@ public class ActivitiesController
                 ps.setString(6, Address);
                 ps.setString(7, Website);
 
-                ps.executeUpdate();
+                ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
 
                 System.out.println("Record added to Activities");
             }
-            catch (Exception exception)
+            catch (Exception exception) //if an error occurs returns an error message
             {
                 System.out.println("Database error: " + exception.getMessage());
             }
@@ -68,6 +69,7 @@ public class ActivitiesController
             {
                 PreparedStatement ps = db.prepareStatement("UPDATE Activities SET ActivityID = ?, LocationID = ?, ActivityName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");
 
+                //contain the values to be changed through the SQL statement in place of the ?s
                 ps.setInt(1, ActivityID);
                 ps.setInt(2, LocationID);
                 ps.setString(3, ActivityName);
@@ -75,14 +77,17 @@ public class ActivitiesController
                 ps.setString(5, Cost);
                 ps.setString(6, Address);
                 ps.setString(7, Website);
+
+                ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
+
             }
-            catch(Exception exception)
+            catch(Exception exception) //if an error occurs returns an error message
             {
                 System.out.println("Database error: " + exception.getMessage());
             }
         }
 
-    //Adds a record to the Activities table
+    //Deletes a record from the Activities table
         public static void deleteActivity(int ActivityID)
         {
             try

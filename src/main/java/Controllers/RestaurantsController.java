@@ -17,7 +17,7 @@ public class RestaurantsController
 
             ResultSet results = ps.executeQuery();
 
-            while (results.next())
+            while (results.next()) //returns the next record, returns false when no more in the table
             {
                 int TripID = results.getInt(1);
                 int DayNumber = results.getInt(2);
@@ -28,7 +28,7 @@ public class RestaurantsController
                 System.out.println(TripID + " " + DayNumber + " " + ActivityID + " " + Time + " " + Notes);
             }
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -41,6 +41,7 @@ public class RestaurantsController
         {
             PreparedStatement ps = db.prepareStatement("INSERT INTO Restaurants (RestaurantID, LocationID, RestaurantName, Description, Cost, Address, Website) VALUES (?, ?, ?, ?, ?, ?, ?); ");
 
+            //contain the values to be added through the SQL statement in place of the ?s
             ps.setInt(1, RestaurantID);
             ps.setInt(2, LocationID);
             ps.setString(3, RestaurantName);
@@ -48,11 +49,12 @@ public class RestaurantsController
             ps.setString(5, Cost);
             ps.setString(6, Address);
             ps.setString(7, Website);
-            ps.executeUpdate();
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
 
             System.out.println("Record added to Restaurants table");
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -65,6 +67,7 @@ public class RestaurantsController
         {
             PreparedStatement ps = db.prepareStatement("UPDATE Restaurant SET RestaurantID = ?, LocationID = ?, RestaurantName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");
 
+            //contain the values to be changed through the SQL statement in place of the ?s
             ps.setInt(1, RestaurantID);
             ps.setInt(2, LocationID);
             ps.setString(3, RestaurantName);
@@ -72,8 +75,11 @@ public class RestaurantsController
             ps.setString(5, Cost);
             ps.setString(6, Address);
             ps.setString(7, Website);
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
+
         }
-        catch(Exception exception)
+        catch(Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }

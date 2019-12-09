@@ -17,19 +17,20 @@ public class AccommodationController
 
             ResultSet results = ps.executeQuery();
 
-            while (results.next()) {
-                int accommodationID = results.getInt(1);
-                int locationID = results.getInt(2);
-                String accommodationName = results.getString(3);
-                String description = results.getString(4);
-                String cost = results.getString(5);
-                String address = results.getString(6);
-                String website = results.getString(7);
+            while (results.next()) //returns the next record, returns false when no more in the table
+            {
+                int AccommodationID = results.getInt(1);
+                int LocationID = results.getInt(2);
+                String AccommodationName = results.getString(3);
+                String Description = results.getString(4);
+                String Cost = results.getString(5);
+                String Address = results.getString(6);
+                String Website = results.getString(7);
 
-                System.out.println(accommodationID + " " + locationID + " " + accommodationName + " " + description + " " + cost + " " + address + " " + website);
+                System.out.println(AccommodationID + " " + LocationID + " " + AccommodationName + " " + Description + " " + Cost + " " + Address + " " + Website);
             }
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -42,6 +43,7 @@ public class AccommodationController
         {
             PreparedStatement ps = db.prepareStatement("INSERT INTO Accommodation (AccommodationID, LocationID, AccommodationName, Description, Cost, Address, Website) VALUES (?, ?, ?, ?, ?, ?, ?");
 
+            //contain the values to be added through the SQL statement in place of the ?s
             ps.setInt(1, AccommodationID);
             ps.setInt(2, LocationID);
             ps.setString(3, AccommodationName);
@@ -50,12 +52,12 @@ public class AccommodationController
             ps.setString(6, Address);
             ps.setString(7, Website);
 
-            ps.executeUpdate();
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
 
             System.out.println("Record added to Accommodation");
 
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -68,6 +70,7 @@ public class AccommodationController
             {
                 PreparedStatement ps = db.prepareStatement("UPDATE Accommodation SET AccommodationID = ?, LocationID = ?, AccommodationName = ?, Description = ?, Cost = ?, Address = ?, Website = ?");
 
+                //contain the values to be changed through the SQL statement in place of the ?s
                 ps.setInt(1, AccommodationID);
                 ps.setInt(2, LocationID);
                 ps.setString(3, AccommodationName);
@@ -76,8 +79,10 @@ public class AccommodationController
                 ps.setString(6, Address);
                 ps.setString(7, Website);
 
+                ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
+
             }
-            catch (Exception exception)
+            catch (Exception exception)//if an error occurs returns an error message
             {
                 System.out.println("Database error: " + exception.getMessage());
             }
@@ -85,8 +90,7 @@ public class AccommodationController
 
     //Deletes a record within the Accommodation table
     public static void deleteAccommodation (int AccommodationID)
-    {
-        try
+    {        try
         {
             PreparedStatement ps = db.prepareStatement("DELETE FROM Accommodation SET AccommodationID = ?");
 

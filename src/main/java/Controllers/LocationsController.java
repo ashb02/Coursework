@@ -17,16 +17,17 @@ public class LocationsController
 
             ResultSet results = ps.executeQuery();
 
-            while (results.next())
+            while (results.next()) //returns the next record, returns false when no more in the table
             {
                 int LocationID = results.getInt(1);
                 String LocationName = results.getString(2);
                 String Cost = results.getString(3);
                 String AverageTemperature = results.getString(4);
+
                 System.out.println(LocationID + " " + LocationName + " " + Cost + " " + AverageTemperature);
             }
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -38,14 +39,18 @@ public class LocationsController
         try
         {
             PreparedStatement ps = db.prepareStatement("INSERT INTO Activities (LocationID, LocationName, Cost, AverageTemperature) VALUES (?, ?, ?, ?");
+
+            //contain the values to be added through the SQL statement in place of the ?s
             ps.setInt(1, LocationID);
             ps.setString(2, LocationName);
             ps.setString(3, Cost);
             ps.setString(4, AverageTemperature);
-            ps.executeUpdate();
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
+
             System.out.println("Record added to Locations");
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -57,12 +62,17 @@ public class LocationsController
         try
         {
             PreparedStatement ps = db.prepareStatement("UPDATE LocationID = ?, LocationName = ?, Cost = ?, AverageTemperature = ?");
+
+            //contain the values to be changed through the SQL statement in place of the ?s
             ps.setInt(1, LocationID);
             ps.setString(2, LocationName);
             ps.setString(3, Cost);
             ps.setString(4, AverageTemperature);
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
+
         }
-        catch(Exception exception)
+        catch(Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
