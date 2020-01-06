@@ -17,7 +17,7 @@ public class TripAccommodationController
 
             ResultSet results = ps.executeQuery();
 
-            while (results.next()) //returns the next record, returns false when no more in the table
+            while (results.next()) //returns the next record until there are no more values in the column
             {
                 int TripID = results.getInt(1);
                 int DayNumber = results.getInt(2);

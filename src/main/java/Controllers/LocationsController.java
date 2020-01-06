@@ -17,7 +17,7 @@ public class LocationsController
 
             ResultSet results = ps.executeQuery();
 
-            while (results.next()) //returns the next record, returns false when no more in the table
+            while (results.next()) //returns the next record until there are no more values in the column
             {
                 int LocationID = results.getInt(1);
                 String LocationName = results.getString(2);

@@ -17,7 +17,7 @@ public class TripRestaurantsController
 
             ResultSet results = ps.executeQuery();
 
-            while (results.next())
+            while (results.next()) //returns the next record until there are no more values in the column
             {
                 int TripID = results.getInt(1);
                 int DayNumber = results.getInt(2);
@@ -27,7 +27,7 @@ public class TripRestaurantsController
                 System.out.println(TripID + " " + DayNumber + " " + Time + " " + RestaurantID + " ");
             }
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -41,15 +41,17 @@ public class TripRestaurantsController
         {
             PreparedStatement ps = db.prepareStatement("INSERT INTO TripRestaurants (TripID, DayNumber, Time, RestaurantID) VALUES (?, ?, ?, ?)");
 
+            //contain the values to be added through the SQL statement in place of the ?s
             ps.setInt(1, TripID);
             ps.setInt(2, DayNumber);
             ps.setString(3, Time);
             ps.setInt(4, RestaurantID);
-            ps.executeUpdate();
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
 
             System.out.println("Record added to TripRestaurants table");
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -63,12 +65,16 @@ public class TripRestaurantsController
         {
             PreparedStatement ps = db.prepareStatement("UPDATE TripRestaurants SET TripID = ?, DayNumber = ?, Time = ?, RestaurantID = ?");
 
+            //contain the values to be changed through the SQL statement in place of the ?s
             ps.setInt(1, TripID);
             ps.setInt(2, DayNumber);
             ps.setString(3, Time);
             ps.setInt(4, RestaurantID);
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
+
         }
-        catch(Exception exception)
+        catch(Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }

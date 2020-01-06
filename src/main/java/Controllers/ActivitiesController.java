@@ -17,7 +17,7 @@ public class ActivitiesController
 
                 ResultSet results = ps.executeQuery();
 
-                while (results.next()) //returns the next record, returns false when no more in the table
+                while (results.next()) //returns the next record until there are no more values in the column
                 {
                     int ActivityID = results.getInt(1);
                     int LocationID = results.getInt(2);

@@ -18,7 +18,7 @@ public class UsersController
 
             ResultSet results = ps.executeQuery();
 
-            while(results.next())
+            while(results.next()) //returns the next record until there are no more values in the column
             {
                 int UserID = results.getInt(1);
                 String EmailAddress =  results.getString(2);
@@ -28,7 +28,7 @@ public class UsersController
                 System.out.println(UserID + " " + EmailAddress + " " + FirstName + " " + Password);
             }
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -42,15 +42,17 @@ public class UsersController
         {
             PreparedStatement ps = db.prepareStatement("INSERT INTO Users (UserID, EmailAddress, FirstName, Password) VALUES (?, ?, ?, ?");
 
+            //contain the values to be added through the SQL statement in place of the ?s
             ps.setInt(1, UserID);
             ps.setString(2, EmailAddress);
             ps.setString(3, FirstName);
             ps.setString(4, Password);
-            ps.executeUpdate();
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
 
             System.out.println("Record added to Users table");
         }
-        catch(Exception exception)
+        catch(Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
@@ -64,12 +66,15 @@ public class UsersController
         {
             PreparedStatement ps = db.prepareStatement("UPDATE Users SET UserID = ?, EmailAddress = ?, FirstName = ?, Password = ?");
 
+            //contain the values to be changed through the SQL statement in place of the ?s
             ps.setInt(1, UserID);
             ps.setString(2, EmailAddress);
             ps.setString(3, FirstName);
             ps.setString(4, Password);
+
+            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
         }
-        catch (Exception exception)
+        catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
