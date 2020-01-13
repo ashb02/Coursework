@@ -90,6 +90,8 @@ public class TripActivitiesController
         try
         {
             PreparedStatement ps = db.prepareStatement("DELETE FROM ActivityDetails WHERE TripID = ?, DayNumber = ?, ActivityID = ?, Time = ?");
+
+            //contain the values that can be checked against to delete a record from a table
             ps.setInt(1, TripID);
             ps.setInt(2, DayNumber);
             ps.setInt(3, ActivityID);
@@ -97,7 +99,7 @@ public class TripActivitiesController
             ps.executeUpdate();
 
         }
-        catch(Exception exception)
+        catch(Exception exception) // if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
         }
