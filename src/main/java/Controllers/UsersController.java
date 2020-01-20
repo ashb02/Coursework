@@ -1,20 +1,37 @@
 package Controllers;
 
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONObject;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import static Server.Main.db;
 
-
+@Path("Users/")
 public class UsersController
 {
 
-    //Outputs the items in the Users Table
-    public static void listUser()
-    {
-        try
-        {
-            PreparedStatement ps = db.prepareStatement("SELECT UserID, EmailAddress, FirstName, Password FROM Users");
+    //Outputs items from the Users Table
+    @GET
+    @Path("login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public static void listUser(@FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("Password") String Password) throws Exception {
+        if (EmailAddress == null || Password == null){
+            throw new Exception("User's EmailAddress or Password is missing in the HTTP request's URL.");
+        }
+
+        System.out.println("Users/login/" + EmailAddress + " " + Password);
+        JSONObject item = new JSONObject();
+
+        try {
+            PreparedStatement ps = db.prepareStatement("SELECT UserID, EmailAddress, FirstName, Password FROM Users WHERE EmailAddress = ? AND Password = ?");
 
             ResultSet results = ps.executeQuery();
 

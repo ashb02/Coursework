@@ -19,9 +19,9 @@ public class TripAccommodationController
 {
 
     //Outputs the items in the TripAccommodation Table
-    // curl -s localhost:8081/TripAccommodation/listTripAccommodation
+    // curl -s localhost:8081/TripAccommodation/viewAccommodation
     @GET
-    @Path("listTripAccommodation")
+    @Path("viewAccommodation")
     @Produces(MediaType.APPLICATION_JSON)
     public static String listTripAccoommodation()
     {
@@ -63,7 +63,6 @@ public class TripAccommodationController
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     //curl -s localhost:8081/TripAccommodation/insertTripAccommodation -F TripID=2 -F DayNumber=2 -F AccommodationID=2
-    //{"status": "OK"}
     public static String insertTripAccommodation(@FormDataParam("TripID") Integer TripID, @FormDataParam("DayNumber") Integer DayNumber, @FormDataParam("AccommodationID") Integer AccommodationID)
     {
         System.out.println("TripAccommodation/insertTripAccommodation");
