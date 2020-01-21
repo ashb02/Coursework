@@ -1,15 +1,16 @@
 package Controllers;
 
+import Server.Main;
+import org.eclipse.jetty.server.Authentication;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.FileReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.UUID;
 
 import static Server.Main.db;
 
@@ -22,42 +23,62 @@ public class UsersController
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static void listUser(@FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("Password") String Password) throws Exception {
-        if (EmailAddress == null || Password == null){
-            throw new Exception("User's EmailAddress or Password is missing in the HTTP request's URL.");
-        }
-
-        System.out.println("Users/login/" + EmailAddress + " " + Password);
-        JSONObject item = new JSONObject();
+    // curl -s localhost8081/Users/login -F EmailAddress=? -F Password=?
+    public String loginUser(@FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("Password") String Password) throws Exception {
 
         try {
-            PreparedStatement ps = db.prepareStatement("SELECT UserID, EmailAddress, FirstName, Password FROM Users WHERE EmailAddress = ? AND Password = ?");
 
-            ResultSet results = ps.executeQuery();
+            PreparedStatement ps = db.prepareStatement("SELECT Password FROM Users WHERE EmailAddress = ? AND Password = ?");
+            ps.setString(1, EmailAddress);
+            ResultSet loginResults = ps.executeQuery();
 
-            while(results.next()) //returns the next record until there are no more values in the column
-            {
-                int UserID = results.getInt(1);
-                String EmailAddress =  results.getString(2);
-                String FirstName = results.getString(3);
-                String Password = results.getString(4);
+            if (loginResults.next()){
 
-                System.out.println(UserID + " " + EmailAddress + " " + FirstName + " " + Password);
+                String correctPassword = loginResults.getString(1);
+
+                if (Password.equals(correctPassword)) {
+
+                    String token = UUID.randomUUID().toString();
+
+                    PreparedStatement ps1 = Main.db.prepareStatement("UPDATE Users SET Token = ? WHERE EmailAdress = ?");
+                    ps1.setString(1, token);
+                    ps1.setString(2, EmailAddress);
+                    ps1.executeUpdate();
+
+                    return "{\"token\": \""+ token + "\"}";
+
+                } else {
+                    return "{\"error\": \"Incorrect password.\"}";
+                }
+            } else {
+
+                return "{\"error\": \"Unknown user\"}";
+
             }
-        }
-        catch (Exception exception) //if an error occurs returns an error message
-        {
-            System.out.println("Database error: " + exception.getMessage());
+
+        } catch (Exception exception) { //if an error occurs returns an error message
+            System.out.println("Database error during /User/login: " + exception.getMessage());
+            return "{\"error\": \"Server side error.\"}";
         }
     }
 
 
     //Adds a record to the User Table
-    public static void insertUser(int UserID, String EmailAddress, String FirstName, String Password)
+    @POST
+    @Path("new")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String insertUser(@FormDataParam("UserID") Integer UserID, @FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("FirstName") String FirstName, @FormDataParam("Password") String Password)
     {
         try
         {
-            PreparedStatement ps = db.prepareStatement("INSERT INTO Users (UserID, EmailAddress, FirstName, Password) VALUES (?, ?, ?, ?");
+            if (UserID == null || EmailAddress == null) {
+                throw new Exception("One or more form data paraeters are missing from the HTTP request.");
+            }
+
+            System.out.println("User/createAccount=" + UserID);
+
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserID, EmailAddress, FirstName, Password) VALUES (?, ?, ?, ?)");
 
             //contain the values to be added through the SQL statement in place of the ?s
             ps.setInt(1, UserID);
@@ -67,7 +88,7 @@ public class UsersController
 
             ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
 
-            System.out.println("Record added to Users table");
+            return "{\"status"\": \"OK"}"}";
         }
         catch(Exception exception) //if an error occurs returns an error message
         {
