@@ -1,12 +1,11 @@
 package Controllers;
 
 import Server.Main;
-import org.eclipse.jetty.server.Authentication;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.awt.*;
 import java.io.FileReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,11 +17,12 @@ import static Server.Main.db;
 public class UsersController
 {
 
-    //Outputs items from the Users Table
-    @GET
+    //Allows a user to login to their account
+    @Get
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    //Users/login
     // curl -s localhost8081/Users/login -F EmailAddress=? -F Password=?
     public String loginUser(@FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("Password") String Password) throws Exception {
 
@@ -68,10 +68,12 @@ public class UsersController
     @Path("createAccount")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
+    //Users/createAccount
+    //curl -s localhost8081/Users/createAccount -F EmailAddress=? -F FirstName=? -F Password=?
     public String insertUser(@FormDataParam("UserID") Integer UserID, @FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("FirstName") String FirstName, @FormDataParam("Password") String Password) throws Exception {
         try {
             if (UserID == null || EmailAddress == null) {
-                throw new Exception("One or more form data paraeters are missing from the HTTP request.");
+                throw new Exception("One or more form data parameters are missing from the HTTP request.");
             }
 
             System.out.println("User/createAccount=" + UserID);
@@ -94,42 +96,67 @@ public class UsersController
     }
 
 
-    //Changes a record wihtin the Users Table
-    public static void UpdateUser(int UserID, String EmailAddress, String FirstName, String Password)
+    //Changes a record within the Users Table
+    @Post
+    @Path("updateAccount")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    //Users/updateAccount
+    //curl -s localhost8081/Users/updateAccount  -F EmailAddress=? -F FirstName=? -F Password=?
+    public String UpdateUser(@FormDataParam("UserID") Integer UserID, @FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("FirstName") String FirstName, @FormDataParam("Password") String Password)
     {
         try
         {
-            PreparedStatement ps = db.prepareStatement("UPDATE Users SET UserID = ?, EmailAddress = ?, FirstName = ?, Password = ?");
+            if (EmailAddress == null || FirstName == null || Password == null){
+                throw new Exception("One or more form data parameters are missing in the HTTP request");
+            }
+            System.out.println("users/updateAccount" + EmailAddress);
+
+            PreparedStatement ps = db.prepareStatement("UPDATE Users SET EmailAddress = ?, FirstName = ?, Password = ? WHERE UserID =?");
 
             //contain the values to be changed through the SQL statement in place of the ?s
-            ps.setInt(1, UserID);
             ps.setString(2, EmailAddress);
             ps.setString(3, FirstName);
             ps.setString(4, Password);
+            ps.execute(); //executes the SQL statement in the PreparedStatement
+            return "{\"status\": \"OK\"}";
 
-            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
         }
         catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
         }
     }
 
 
     //Deletes a record within the User Table
-    public static void deleteUser(int UserID)
+    @Post
+    @Path("deleteAccount")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    //Users/deleteAccount
+    //curl -s localhost8081/Users/deleteAccount -F EmailAddress=? -F Password=?
+    public String deleteUser(@FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("Password") String Password)
     {
         try
         {
-            PreparedStatement ps = db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
+            if (EmailAddress == null || Password == null){
+                throw new Exception("One or more form data parameters is missing in the HTTP request");
+            }
+            System.out.println("Users/deleteAccount" + EmailAddress);
+            PreparedStatement ps = db.prepareStatement("DELETE FROM Users WHERE EmailAddress = ? AND Password = ?");
 
-            ps.setInt(1, UserID);
+            ps.setString(1, EmailAddress);
+            ps.setString(2, Password);
+            ps.execute();
 
-            ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
         }
         catch (Exception exception)
         {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to delete item, please see server console for more info.\"}";
         }
     }
 

@@ -5,31 +5,76 @@ import java.sql.ResultSet;
 
 import static Server.Main.db;
 
+@Path("Locations/")
 public class LocationsController
 {
 
     //Outputs the items in the Locations table
-    public static void listLocations()
+    @GET
+    @Path("viewAll")
+    @Produces(MediaType.APPLICATION_JSON)
+    //Locations/viewAll
+    //curl -s localhost:8081/Locations/viewAll
+    public String listLocations()
     {
+        System.out.println("Locations/viewAll");
+        JSONArray list = new JSONArray();
         try
         {
-            PreparedStatement ps = db.prepareStatement("SELECT LocationID, LocationName, Cost, AverageTemperature");
-
+            PreparedStatement ps = db.prepareStatement("SELECT LocationID, LocationName, Country, Cost, AverageTemperature");
             ResultSet results = ps.executeQuery();
 
             while (results.next()) //returns the next record until there are no more values in the column
             {
-                int LocationID = results.getInt(1);
-                String LocationName = results.getString(2);
-                String Cost = results.getString(3);
-                String AverageTemperature = results.getString(4);
-
-                System.out.println(LocationID + " " + LocationName + " " + Cost + " " + AverageTemperature);
+                JSONObject item = newJSONObject();
+                item.put("LocationID", results.getInt(1));
+                item.put("LocationName", results.getString(2));
+                item.put("Country", results.getString(3));
+                item.put("Cost", results.getString(4));
+                item.put("AverageTemperature", results.getString(5));
+                list.add(item);
             }
+            return list.toString();
         }
         catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+        }
+    }
+
+    @GET
+    @Path("searchCountry")
+    @Produces(MediaType.APPLICATION_JSON)
+    //Locations/searchCountry
+    //curl -s localhost:8081/Locations/searchCountry -F Country=?
+    public String listCountry(@FormDataParam("Country") String Country) throws Exception {
+        if (Country == null){
+            throw new Exception("Country is missing in the HTTP request");
+        }
+        System.out.println("Locations/searchCountry" + Country);
+        JSONArray list = new JSONArray();
+        try
+        {
+            PreparedStatement ps = db.prepareStatement("SELECT LocationID, LocationName, Country, Cost, AverageTemperature WHERE Country =?");
+            ResultSet results = ps.executeQuery();
+
+            while (results.next()) //returns the next record until there are no more values in the column
+            {
+                JSONObject item = newJSONObject();
+                item.put("LocationID", results.getInt(1));
+                item.put("LocationName", results.getString(2));
+                item.put("Country", results.getString(3));
+                item.put("Cost", results.getString(4));
+                item.put("AverageTemperature", results.getString(5));
+                list.add(item);
+            }
+            return list.toString();
+        }
+        catch (Exception exception) //if an error occurs returns an error message
+        {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
         }
     }
 
