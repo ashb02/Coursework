@@ -17,13 +17,12 @@ import static Server.Main.db;
 @Path("TripAccommodation/")
 public class TripAccommodationController
 {
-
     //Outputs the items in the TripAccommodation Table
     // curl -s localhost:8081/TripAccommodation/viewAccommodation
     @GET
     @Path("viewAccommodation")
     @Produces(MediaType.APPLICATION_JSON)
-    public static String listTripAccoommodation()
+    public static String listTripAccommodation()
     {
         System.out.println("TripAccommodation/listTripAccommodation");
         JSONArray list = new JSONArray();
@@ -94,7 +93,7 @@ public class TripAccommodationController
     {
         try
         {
-            PreparedStatement ps = db.prepareStatement("UPDATE AccommodationDetails SET TripID = ?, DayNumber = ?, AccommodationID = ?");
+            PreparedStatement ps = db.prepareStatement("UPDATE TripAccommodation SET TripID = ?, DayNumber = ?, AccommodationID = ?");
 
             //contain the values to be changed through the SQL statement in place of the ?s
             ps.setInt(1, TripID);
@@ -116,7 +115,7 @@ public class TripAccommodationController
     {
         try
         {
-            PreparedStatement ps = db.prepareStatement("DELETE FROM AccommodationDetials WHERE TripID = ?, DayNumber = ?, AccommodationID = ?");
+            PreparedStatement ps = db.prepareStatement("DELETE FROM TripAccommodation WHERE TripID = ?, DayNumber = ?, AccommodationID = ?");
 
             ps.setInt(1, TripID);
             ps.setInt(2, DayNumber);
