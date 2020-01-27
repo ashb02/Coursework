@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="TravelPlannerDatabase" uuid="348ede9d-cd06-4d34-9111-d6be231a97d7">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:U:\CS\Computer Science\Coursework\resources\TravelPlannerDatabase.db</jdbc-url>
-      <driver-properties>
-        <property name="enable_load_extension" value="true" />
-      </driver-properties>
-    </data-source>
     <data-source source="LOCAL" name="TravelPlannerDatabase.db" uuid="5b9eb5bc-0fd5-49d0-9ee4-e8730d579644">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>

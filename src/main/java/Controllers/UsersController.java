@@ -65,13 +65,11 @@ public class UsersController
 
     //Adds a record to the User Table
     @POST
-    @Path("new")
+    @Path("createAccount")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String insertUser(@FormDataParam("UserID") Integer UserID, @FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("FirstName") String FirstName, @FormDataParam("Password") String Password)
-    {
-        try
-        {
+    public String insertUser(@FormDataParam("UserID") Integer UserID, @FormDataParam("EmailAddress") String EmailAddress, @FormDataParam("FirstName") String FirstName, @FormDataParam("Password") String Password) throws Exception {
+        try {
             if (UserID == null || EmailAddress == null) {
                 throw new Exception("One or more form data paraeters are missing from the HTTP request.");
             }
@@ -85,14 +83,13 @@ public class UsersController
             ps.setString(2, EmailAddress);
             ps.setString(3, FirstName);
             ps.setString(4, Password);
+            ps.execute(); //executes the SQL statement in the PreparedStatement
 
-            ps.executeUpdate(); //executes the SQL statement in the PreparedStatement
-
-            return "{\"status"\": \"OK"}"}";
-        }
-        catch(Exception exception) //if an error occurs returns an error message
+            return "{\"status\": \"OK\"}";
+        } catch (Exception exception) //if an error occurs returns an error message
         {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new account, please see server console for more info.\"}";
         }
     }
 
